@@ -62,6 +62,9 @@ class FactorizedConvolution(Module, torch.nn.Module):
             shared_weights=True,
         )
 
+        # TODO: remove this
+        feature_irreps_out = Irreps(feature_irreps_out)
+
         self.tp = TensorProductExpansion(
             feature_irreps_in,
             (irreps_edge_attr, "edge_spherical"),

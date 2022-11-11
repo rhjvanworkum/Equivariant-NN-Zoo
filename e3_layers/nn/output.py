@@ -120,7 +120,7 @@ class Pairwise(Module, torch.nn.Module):
         else:
             self.conv = None
 
-        irreps_out = self.irreps_out["diagonal"]
+        irreps_out = Irreps(self.irreps_out["diagonal"])
         self.tp = TensorProductExpansion(irreps_in, irreps_in, irreps_out, "uvu")
         self.res_center = ResBlock(irreps_in, irreps_in)
         self.res_pair = ResBlock(irreps_out, irreps_out)
@@ -188,8 +188,8 @@ class TensorProductContraction(Module, torch.nn.Module):
         self.irreps_mul = {}
         # counts the mul of irreps needed to construct the tensor product tp_l*tp_r
         # for example, if tp_l = 1x0o+1x1e, tp_r = 2x2e, irreps_mul = {1e: 2, 2e: 2, 2o:2, 3e:2}
-        for mul_l, (degree_l, parity_l) in self.irreps_out["tp_l"]:
-            for mul_r, (degree_r, parity_r) in self.irreps_out["tp_r"]:
+        for mul_l, (degree_l, parity_l) in Irreps(self.irreps_out["tp_l"]):
+            for mul_r, (degree_r, parity_r) in Irreps(self.irreps_out["tp_r"]):
                 parity = parity_l * parity_r
                 parity = "e" if parity == 1 else "o"
                 mul = mul_l * mul_r
